@@ -169,9 +169,9 @@ def teacher_tab_take_attendance():
 
                 attendance_result_dialog(pd.DataFrame(results), attendance_to_log)
 
-        with c3:
-            if st.button('Use Voice Attendance', type='primary',width='stretch', icon=':material/mic:'):
-                voice_attendance_dialog(selected_subject_id)
+    with c3:
+        if st.button('Use Voice Attendance', type='primary',width='stretch', icon=':material/mic:'):
+            voice_attendance_dialog(selected_subject_id)
 
 
 
@@ -234,25 +234,25 @@ def teacher_tab_attendance_records():
             "is_present": bool(r.get('is_present', False))
             })
         
-        df = pd.DataFrame(data)
+    df = pd.DataFrame(data)
 
-        summary = (
-            df.groupby(['ts_group', 'Time', 'Subject', 'Subject Code'])
-            .agg(
-                Present_Count = ('is_present', 'sum'),
-                Total_Count = ('is_present', 'count')
-            ).reset_index()
-        )
+    summary = (
+        df.groupby(['ts_group', 'Time', 'Subject', 'Subject Code'])
+        .agg(
+            Present_Count = ('is_present', 'sum'),
+            Total_Count = ('is_present', 'count')
+        ).reset_index()
+    )
 
-        summary['Attendance Stats']= (
-            "✅ " + summary['Present_Count'].astype(str) + "/"
-            + summary["Total_Count"].astype(str) + 'Students'
-        )
+    summary['Attendance Stats']= (
+        "✅ " + summary['Present_Count'].astype(str) + "/"
+        + summary["Total_Count"].astype(str) + 'Students'
+    )
 
-        display_df = (summary.sort_values(by='ts_group', ascending=False)
-                      [['Time', 'Subject', 'Subject Code', 'Attendance Stats']])
+    display_df = (summary.sort_values(by='ts_group', ascending=False)
+                    [['Time', 'Subject', 'Subject Code', 'Attendance Stats']])
 
-        st.dataframe(display_df, width='stretch', hide_index=True)
+    st.dataframe(display_df, width='stretch', hide_index=True)
 
 
 def login_teacher(username, password):
